@@ -1,3 +1,25 @@
+<?php
+
+$is_invalid = false;
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
+    $mysqli = require __DIR__ . "/database.php";
+    
+    $username = mysqli_real_escape_string($mysqli,strtolower($_POST['uname']));
+    $password = mysqli_real_escape_string($mysqli,$_POST['password']);
+    
+    if($username == "admin" && $password == "admin"){
+        session_start();  
+        session_regenerate_id(); 
+        $_SESSION["user_id"] = "admin";
+        header('Location: order-details.php');
+    }
+    
+    $is_invalid = true;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -24,8 +46,10 @@
 
     <section class="contact" id="login" >
         <h1 class="heading">Login</h1>
-
-        <form name="loginform" onsubmit="form_validate()">
+        <?php if ($is_invalid): ?>
+        <em>Invalid login</em>
+    <?php endif; ?>
+        <form method="post" name="adminlogin" onsubmit="form_validate()">
             <input type="text" name="uname" placeholder="Username" class="box">
             <input type="Password" name="password" placeholder="password" class="box">
             <input type="submit" value="Login" class="btn">
@@ -33,7 +57,7 @@
     </section>
         <!-- FOOTER -->
         <section class="footer">
-            <div class="credit">Don't have an account? <span><a href="signup.html">Signup</a> | <a href="index.html"> Or return to the website.</a></span></div>
+            <div class="credit">| <a href="index.php"> return to the website.</a> |</div>
         </section>
     
     <!-- SWIPER -->

@@ -24,7 +24,7 @@
     <section class="contact" id="signup" >
         <h1 class="heading">Create an account</h1>
 
-        <form name="signupform" onsubmit="form_validate()">
+        <form action="process-signup.php" method="post" name="signupform" onsubmit="form_validate()">
             <input type="text" name="uname" placeholder="Create Username" class="box">
             <input type="Password" name="password" placeholder="Create password" class="box">
             <input type="email" name="email" placeholder="Enter email address" class="box">
@@ -36,7 +36,7 @@
     </section>
         <!-- FOOTER -->
         <section class="footer">
-            <div class="credit">Already have an account? <span><a href="login.html">Login!</a></span></div>
+            <div class="credit">Already have an account? <span><a href="login.php">Login!</a></span>| <a href="index.php"> Or return to the website.</a> </div>
         </section>
     
     <!-- SWIPER -->

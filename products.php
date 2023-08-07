@@ -1,32 +1,62 @@
+<?php
+
+session_start();
+
+if (isset($_SESSION["user_id"])) {
+    
+    $mysqli = require __DIR__ . "/database.php";
+    
+    $sql = "SELECT * FROM customers
+            WHERE id = {$_SESSION["user_id"]}";
+            
+    $result = $mysqli->query($sql);
+    
+    $user = $result->fetch_assoc();
+}
+
+?>
+
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Our Product | Bonsai</title>
-    <!-- CSS -->
-    <link href="css/product_style.css" rel="stylesheet" />
-    <meta name="robots" content="noindex,follow" />
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop | Bonsai</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  </head>
 
-  <body>
-    <!-- HEADER -->
-    <header class="header">
-      <div id="menu-btn" class="fas fa-bars"></div>
+    <link rel="stylesheet" href="css/product_style.css">
 
-      <a href="index.html" class="logo">Bonsai <i class="" ></i></a>
+</head>
+<body>
+     <!-- HEADER -->
+     <header class="header">
+        <div id="menu-btn" class="fas fa-bars"></div>
 
-      <nav class="navbar">
-          <a href="index.html">home</a>
-          <a href="about.html">about</a>
-          <a href="products.html">products</a>
-          <a href="blog.html">Blog</a>
-          <a href="research.html">Research</a>
-      </nav>
+        <a href="index.php" class="logo"> Bonsai <i class="" ></i></a>
 
-      <a href="products.html" class="btn">Get a Bonsai</a>
-  </header>
+        <nav class="navbar">
+            <a href="index.php">home</a>
+            <a href="about.php">about</a>
+            <a href="products.php">products</a>
+            <a href="blog.php">Blog</a>
+            <a href="research.php">Research</a>
+        </nav>
+        <?php if (isset($user)): ?>
+            <a href="logout.php" class="btn"><?= htmlspecialchars($user["uname"]) ?>, Logout</a>
+        
+        
+    <?php else: ?>
+        <a href="login.php" class="btn">Login</a>
+
+        
+    <?php endif; ?>
+        
+     </header>
     <main class="container" style="padding-top: 12rem;">
       <!-- Left Column / Headphones Image -->
       <div class="left-column">
@@ -45,9 +75,8 @@
             Professionally curated for your indoors use.
           </p>
         </div>
-
         <!-- Product Configuration -->
-        <div class="product-configuration">
+        <form action="process-purchase.php" method="post" class="product-configuration">
           <!-- Product Color -->
           <div class="product-color">
             <span>Color</span>
@@ -68,12 +97,13 @@
               </div>
             </div>
           </div>
-
+    
         <!-- Product Pricing -->
         <div class="product-price">
           <span>Rs. 1,250</span>
-          <a href="#" class="btn">Buy</a>
+          <input type="submit" value="purchase" class="btn">
         </div>
+        </form>
       </div>
     </main>
         <!-- FOOTER -->
@@ -82,18 +112,18 @@
   
               <div class="box">
                   <h3>quick links</h3>
-                  <a href="index.html"><i class="fas fa-arrow-right"></i> home</a>
-                  <a href="about.html"><i class="fas fa-arrow-right"></i> about</a>
-                  <a href="products.html"><i class="fas fa-arrow-right"></i> Products</a>
-                  <a href="blog.html"><i class="fas fa-arrow-right"></i> Blog</a>
-                  <a href="research.html"><i class="fas fa-arrow-right"></i> Research</a>
+                  <a href="index.php"><i class="fas fa-arrow-right"></i> home</a>
+                  <a href="about.php"><i class="fas fa-arrow-right"></i> about</a>
+                  <a href="products.php"><i class="fas fa-arrow-right"></i> Products</a>
+                  <a href="blog.php"><i class="fas fa-arrow-right"></i> Blog</a>
+                  <a href="research.php"><i class="fas fa-arrow-right"></i> Research</a>
               </div>
   
               <div class="box">
                   <h3>contact info</h3>
                   <a href="#"><i class="fas fa-phone"></i> (+977) 981-234-5678</a>
                   <a href="#"><i class="fas fa-envelope"></i> bonsai@gmail.com</a>
-                  <a href="#"><i class="fas fa-envelope"></i> Ithari, Nepal</a>
+                  <a href="#"><i class="fas fa-envelope"></i> Kathmandu, Nepal</a>
               </div>
   
               <div class="box">
@@ -106,7 +136,7 @@
               </div>
           </div>
   
-          <div class="credit">created by <span>Group Name</span> | all rights reserved</div>
+          <div class="credit">created by <span>Ragin Shrestha</span> | all rights reserved 2023</div>
       </section>
     <!-- Scripts -->
     <script
